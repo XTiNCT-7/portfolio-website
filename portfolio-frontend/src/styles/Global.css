@@ -46,6 +46,10 @@ img {
   height: auto;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Loading Screen*/
 .loading-screen {
   position: fixed;

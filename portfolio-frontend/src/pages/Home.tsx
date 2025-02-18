@@ -168,6 +168,13 @@ const Home: React.FC = () => {
     },
   };
 
+  const projectsRef = React.useRef<HTMLElement>(null);
+  const scrollToProjects = () => {
+    if (projectsRef.current) {
+      projectsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <>
       {!isLoaded ? (
@@ -212,7 +219,11 @@ const Home: React.FC = () => {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.5, duration: 1 }}
               >
-                <a href="#projects" className="cta-button">
+                <a
+                  href="#projects"
+                  className="cta-button"
+                  onClick={scrollToProjects}
+                >
                   View My Work
                 </a>
               </motion.div>
@@ -299,7 +310,7 @@ const Home: React.FC = () => {
           </section>
 
           {/* Projects Section */}
-          <section className="projects-section" id="projects">
+          <section className="projects-section" id="projects" ref={projectsRef}>
             <div className="projects-container">
               <motion.h2
                 className="section-title centered"
