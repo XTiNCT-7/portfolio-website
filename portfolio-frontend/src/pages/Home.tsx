@@ -46,12 +46,12 @@ const Home: React.FC = () => {
     },
     {
       id: 2,
-      title: "Weather Dashboard",
+      title: "ProductCompareAI website",
       description:
-        "Created a real-time weather dashboard with data visualization using D3.js.",
-      technologies: ["React", "TypeScript", "D3.js", "OpenWeather API"],
-      image: "/api/placeholder/300/180",
-      link: "#",
+        "Created a Website chatbot which compares products and suggest user's need.",
+      technologies: ["React", "TypeScript", "Vercel", "Mistral AI"],
+      image: "/src/assets/placeholder/chatbot.png",
+      link: "https://product-compare-ai.vercel.app",
     },
     {
       id: 3,
@@ -289,7 +289,7 @@ const Home: React.FC = () => {
                   and Node.js.
                 </p>
                 <p className="about-text">
-                  With over 5 years of experience, I've worked on a variety of
+                  With over 2.6 years of experience, I've worked on a variety of
                   projects ranging from e-commerce platforms to complex data
                   visualization tools. I'm committed to writing clean,
                   maintainable code and creating exceptional user experiences.
