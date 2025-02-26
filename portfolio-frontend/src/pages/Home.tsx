@@ -50,7 +50,7 @@ const Home: React.FC = () => {
       description:
         "Created a Website chatbot which compares products and suggest user's need.",
       technologies: ["React", "TypeScript", "Vercel", "Mistral AI"],
-      image: "/src/assets/placeholder/chatbot.png",
+      image: "/chatbot.png",
       link: "https://product-compare-ai.vercel.app",
     },
     {
