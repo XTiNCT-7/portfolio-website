@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import { useTypingSound } from "../hooks/useTypingSound";
 
 // --- Types ---
 type CommandLog = {
@@ -8,107 +9,26 @@ type CommandLog = {
   output: React.ReactNode;
 };
 
-// --- Content Data ---
-const projects = [
-  {
-    title: "E-commerce Platform",
-    description: "Built a full-stack e-commerce platform using React, Node.js, and MongoDB.",
-    link: "#",
-  },
-  {
-    title: "ProductCompareAI website",
-    description: "Created a Website chatbot which compares products.",
-    link: "https://product-compare-ai.vercel.app",
-  },
-  {
-    title: "Task Management App",
-    description: "Developed a task management application with authentication and real-time updates.",
-    link: "#",
-  },
-];
-
-const HelpContent = () => (
-  <div className="mt-1 mb-2">
-    <div className="text-highlight mb-1">Available commands:</div>
-    <div className="grid-list">
-      <div><span className="text-highlight">help</span>     - Show this help message</div>
-      <div><span className="text-highlight">about</span>    - Learn more about me</div>
-      <div><span className="text-highlight">projects</span> - View my recent work</div>
-      <div><span className="text-highlight">skills</span>   - List my technical skills</div>
-      <div><span className="text-highlight">contact</span>  - Get my contact information</div>
-      <div><span className="text-highlight">clear</span>    - Clear the terminal screen</div>
-    </div>
-  </div>
-);
-
-const AboutContent = () => (
-  <div className="mt-1 mb-2">
-    <div className="text-highlight mb-1">❯ USER PROFILE MATCH: RAMPRAKASH</div>
-    <p className="mb-1">
-      Hello, I'm Ramprakash. I'm a passionate full-stack developer specializing in building
-      robust, scalable web applications from end to end.
-    </p>
-    <p>
-      I combine React/TypeScript for dynamic, modern frontends with robust Java Spring Boot
-      architectures on the backend, ensuring a seamless flow of data and beautiful user experiences.
-    </p>
-  </div>
-);
-
-const ProjectsContent = () => (
-  <div className="mt-1 mb-2 flex-col gap-2">
-    <div className="text-highlight">❯ ACCESSING PROJECT ARCHIVE...</div>
-    {projects.map((p, i) => (
-      <div key={i} className="project-frame">
-        <div style={{ fontWeight: "bold", color: "var(--text-highlight)", marginBottom: "4px" }}>
-          [{i + 1}] {p.title}
-        </div>
-        <div style={{ marginBottom: "6px" }}>{p.description}</div>
-        <a href={p.link} target="_blank" rel="noreferrer" className="flex-row">
-          <span>URL: </span>
-          <span style={{ textDecoration: "underline", marginLeft: "4px" }}>{p.link}</span>
-        </a>
-      </div>
-    ))}
-  </div>
-);
-
-const SkillsContent = () => (
-  <div className="mt-1 mb-2">
-    <div className="text-highlight mb-1">❯ ANALYZING SKILL MATRIX...</div>
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <div><strong className="text-highlight">Frontend:</strong> React, TypeScript, HTML/CSS, Tailwind, Framer Motion</div>
-      <div><strong className="text-highlight">Backend:</strong> Node.js, Express, Java, Spring Boot</div>
-      <div><strong className="text-highlight">Database:</strong> MongoDB, PostgreSQL, MySQL</div>
-      <div><strong className="text-highlight">Tools:</strong> Git, Docker, AWS, Postman</div>
-    </div>
-  </div>
-);
-
-const ContactContent = () => (
-  <div className="mt-1 mb-2">
-    <div className="text-highlight mb-1">❯ INITIATING SECURE COMM LINE...</div>
-    <div className="grid-list">
-      <div><strong className="text-highlight">Email:</strong> <a href="mailto:ramprakash@example.com">ramprakash@example.com</a></div>
-      <div><strong className="text-highlight">GitHub:</strong> <a href="https://github.com/XTiNCT-7" target="_blank" rel="noreferrer">XTiNCT-7</a></div>
-      <div><strong className="text-highlight">LinkedIn:</strong> <a href="https://www.linkedin.com/in/ramprakash-nadar-b80199216" target="_blank" rel="noreferrer">Profile Link</a></div>
-    </div>
-  </div>
-);
-
-const ErrorContent = ({ cmd }: { cmd: string }) => (
-  <div className="mt-1 mb-2" style={{ color: "#ff5f56" }}>
-    Command not found: '{cmd}'. Type 'help' to see available commands.
-  </div>
-);
+import {
+  AVAILABLE_COMMANDS, HelpContent, AboutContent, ProjectsContent,
+  SkillsContent, ContactContent, ThemeContent, ErrorContent,
+  WhoamiContent, ExperienceContent, EducationContent, SocialsContent,
+  ResumeContent, SudoContent, RickrollContent
+} from "../components/TerminalCommands";
 
 // --- Component ---
 const Home: React.FC = () => {
   const [inputVal, setInputVal] = useState("");
   const [history, setHistory] = useState<CommandLog[]>([]);
+  // Tracking the index of user-entered commands (not system boots) for up/down arrows
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState<number>(-1);
+
   const [isBooting, setIsBooting] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const { soundEnabled, playTypingSound, toggleSound } = useTypingSound();
 
   // Focus input on click anywhere
   useEffect(() => {
@@ -138,7 +58,7 @@ const Home: React.FC = () => {
             <div className="mb-2">
               <pre className="text-highlight" style={{ fontSize: "0.65em", lineHeight: "1.2", marginBottom: "1rem" }}>
                 {`
- ____    _    __  __ ____  ____      _    _  __    _    ____  _   _ 
+ ____    _    __  __ ____  ____      _    _  __    _    ____  _   _
 |  _ \\  / \\  |  \\/  |  _ \\|  _ \\    / \\  | |/ /   / \\  / ___|| | | |
 | |_) |/ _ \\ | |\\/| | |_) | |_) |  / _ \\ | ' /   / _ \\ \\___ \\| |_| |
 |  _ </ ___ \\| |  | |  __/|  _ <  / ___ \\| . \\  / ___ \\ ___) |  _  |
@@ -170,36 +90,136 @@ const Home: React.FC = () => {
     }
 
     let output: React.ReactNode = null;
-    switch (cmd) {
+    let [baseCmd, ...args] = cmd.split(" ");
+
+    switch (baseCmd) {
       case "help": output = <HelpContent />; break;
       case "about": output = <AboutContent />; break;
       case "projects": output = <ProjectsContent />; break;
       case "skills": output = <SkillsContent />; break;
       case "contact": output = <ContactContent />; break;
-      default: output = <ErrorContent cmd={cmd} />;
+      case "whoami": output = <WhoamiContent />; break;
+      case "experience": output = <ExperienceContent />; break;
+      case "education": output = <EducationContent />; break;
+      case "socials": output = <SocialsContent />; break;
+      case "resume": output = <ResumeContent />; break;
+      case "sudo": output = <SudoContent />; break;
+      case "rickroll": output = <RickrollContent />; break;
+      case "theme":
+        const selectedTheme = args[0] || "";
+        output = <ThemeContent theme={selectedTheme} />;
+        if (["matrix", "amber", "red", "cyan"].includes(selectedTheme)) {
+          if (selectedTheme === "matrix") {
+            document.body.removeAttribute("data-theme");
+          } else {
+            document.body.setAttribute("data-theme", selectedTheme);
+          }
+        }
+        break;
+      default: output = <ErrorContent cmd={baseCmd} />;
     }
 
-    setHistory((prev) => [
-      ...prev,
-      {
-        id: Math.random().toString(36).substring(7),
-        command: inputVal, // keep original casing for display
-        output,
-      },
-    ]);
+    const commandId = Math.random().toString(36).substring(7);
+    const requiresLoading = ["projects", "experience", "education"].includes(baseCmd);
+
+    if (requiresLoading) {
+      // Show loading state first
+      setHistory((prev) => [
+        ...prev,
+        {
+          id: commandId,
+          command: inputVal,
+          output: (
+            <motion.div>
+              <div className="text-dim">Fetching data...</div>
+              <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: "100%" }}
+                transition={{ duration: 0.8 }}
+                style={{ height: "4px", background: "var(--text-main)", marginTop: "8px", maxWidth: "200px" }}
+              />
+            </motion.div>
+          ),
+        },
+      ]);
+
+      // Replace with actual output after "delay"
+      setTimeout(() => {
+        setHistory((prev) =>
+          prev.map((log) =>
+            log.id === commandId ? { ...log, output } : log
+          )
+        );
+      }, 900);
+    } else {
+      // Instant output
+      setHistory((prev) => [
+        ...prev,
+        { id: commandId, command: inputVal, output },
+      ]);
+    }
+
+    // Add to command history buffer for arrow key navigation
+    setCommandHistory((prev) => [...prev, cmd]);
+    setHistoryIndex(-1); // Reset index
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (commandHistory.length > 0) {
+        const nextIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1);
+        setHistoryIndex(nextIndex);
+        setInputVal(commandHistory[nextIndex]);
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex !== -1) {
+        const nextIndex = historyIndex + 1;
+        if (nextIndex >= commandHistory.length) {
+          setHistoryIndex(-1);
+          setInputVal("");
+        } else {
+          setHistoryIndex(nextIndex);
+          setInputVal(commandHistory[nextIndex]);
+        }
+      }
+    } else if (e.key === "Tab") {
+      e.preventDefault(); // Prevent focus shift
+      const val = inputVal.toLowerCase();
+      const matches = AVAILABLE_COMMANDS.filter(c => c.startsWith(val));
+      if (matches.length === 1) {
+        setInputVal(matches[0]);
+      } else if (matches.length > 1) {
+        // If multiple matches, we could show them or auto-complete the common prefix
+        // For simplicity, we just complete the first match.
+        setInputVal(matches[0]);
+      }
+    }
   };
 
   return (
     <main className="crt">
       <div className="terminal-window">
         {/* Terminal Header */}
-        <div className="terminal-header">
-          <div className="terminal-header-buttons">
-            <div className="terminal-header-btn btn-close"></div>
-            <div className="terminal-header-btn btn-min"></div>
-            <div className="terminal-header-btn btn-max"></div>
+        <div className="terminal-header" style={{ justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div className="terminal-header-buttons">
+              <div className="terminal-header-btn btn-close"></div>
+              <div className="terminal-header-btn btn-min"></div>
+              <div className="terminal-header-btn btn-max"></div>
+            </div>
+            <div>guest@ramprakash-os:~</div>
           </div>
-          <div>guest@ramprakash-os:~</div>
+          <button
+            onClick={toggleSound}
+            style={{
+              background: "transparent", border: "1px solid var(--border-color)",
+              color: "var(--text-dim)", fontSize: "0.7rem", padding: "2px 8px", cursor: "pointer"
+            }}
+          >
+            Sound: {soundEnabled ? "ON" : "OFF"}
+          </button>
         </div>
 
         {/* Terminal Body */}
@@ -243,7 +263,11 @@ const Home: React.FC = () => {
                   ref={inputRef}
                   type="text"
                   value={inputVal}
-                  onChange={(e) => setInputVal(e.target.value)}
+                  onChange={(e) => {
+                    setInputVal(e.target.value);
+                    playTypingSound();
+                  }}
+                  onKeyDown={handleKeyDown}
                   autoFocus
                   autoComplete="off"
                   spellCheck="false"

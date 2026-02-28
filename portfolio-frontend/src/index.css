@@ -3,12 +3,13 @@
 :root {
   --bg-color: #050505;
   --terminal-bg: rgba(10, 15, 10, 0.85);
-  --text-main: #00ff41; /* classic matrix green */
+  --text-main: #00ff41;
+  /* classic matrix green */
   --text-dim: #008f11;
   --text-highlight: #b6ff00;
   --border-color: #003b00;
   --scanline-color: rgba(0, 255, 65, 0.03);
-  
+
   font-family: 'Fira Code', monospace;
   font-weight: 400;
   line-height: 1.6;
@@ -23,6 +24,31 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+[data-theme="amber"] {
+  --text-main: #ffb000;
+  --text-dim: #996900;
+  --text-highlight: #ffcc4d;
+  --scanline-color: rgba(255, 176, 0, 0.03);
+  --border-color: #4a3300;
+}
+
+[data-theme="red"] {
+  --text-main: #ff3333;
+  --text-dim: #990000;
+  --text-highlight: #ff6666;
+  --scanline-color: rgba(255, 51, 51, 0.03);
+  --border-color: #4a0000;
+}
+
+[data-theme="cyan"] {
+  --text-main: #00ffff;
+  --text-dim: #008080;
+  --text-highlight: #80ffff;
+  --scanline-color: rgba(0, 255, 255, 0.03);
+  --border-color: #004a4a;
+}
+
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -35,11 +61,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: hidden; /* We'll handle scrolling inside the terminal */
+  overflow: hidden;
+  /* We'll handle scrolling inside the terminal */
   background: var(--bg-color);
-  background-image: 
+  background-image:
     radial-gradient(circle at center, rgba(0, 255, 65, 0.05) 0%, transparent 60%),
-    linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9));
+    linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.9));
 }
 
 a {
@@ -59,13 +86,16 @@ a:hover {
 ::-webkit-scrollbar {
   width: 8px;
 }
+
 ::-webkit-scrollbar-track {
   background: rgba(0, 20, 0, 0.5);
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--text-dim);
   border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--text-main);
 }
@@ -81,11 +111,9 @@ a:hover {
   left: 0;
   bottom: 0;
   right: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(18, 16, 16, 0) 50%,
-    var(--scanline-color) 50%
-  );
+  background: linear-gradient(to bottom,
+      rgba(18, 16, 16, 0) 50%,
+      var(--scanline-color) 50%);
   background-size: 100% 4px;
   z-index: 50;
   pointer-events: none;
@@ -93,11 +121,25 @@ a:hover {
 
 /* Flicker Animation */
 @keyframes flicker {
-  0% { opacity: 0.95; }
-  5% { opacity: 0.85; }
-  10% { opacity: 0.95; }
-  15% { opacity: 1; }
-  100% { opacity: 1; }
+  0% {
+    opacity: 0.95;
+  }
+
+  5% {
+    opacity: 0.85;
+  }
+
+  10% {
+    opacity: 0.95;
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
 
 .crt::after {
@@ -132,8 +174,15 @@ a:hover {
 }
 
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
 /* Selection */
@@ -144,7 +193,12 @@ a:hover {
 }
 
 /* Typography styles */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: 600;
   color: var(--text-main);
   margin-bottom: 0.5em;
@@ -160,7 +214,7 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--terminal-bg);
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 
+  box-shadow:
     0 0 20px rgba(0, 59, 0, 0.5),
     inset 0 0 15px rgba(0, 255, 65, 0.1);
   overflow: hidden;
@@ -193,9 +247,17 @@ h1, h2, h3, h4, h5, h6 {
   background: #333;
 }
 
-.btn-close { background: #ff5f56; }
-.btn-min { background: #ffbd2e; }
-.btn-max { background: #27c93f; }
+.btn-close {
+  background: #ff5f56;
+}
+
+.btn-min {
+  background: #ffbd2e;
+}
+
+.btn-max {
+  background: #27c93f;
+}
 
 .terminal-body {
   flex-grow: 1;
@@ -207,13 +269,44 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Utilities */
-.text-dim { color: var(--text-dim); }
-.text-highlight { color: var(--text-highlight); }
-.mt-1 { margin-top: 0.5rem; }
-.mb-1 { margin-bottom: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mb-2 { margin-bottom: 1rem; }
-.flex-row { display: flex; align-items: center; }
-.flex-col { display: flex; flex-direction: column; }
-.gap-1 { gap: 0.5rem; }
-.gap-2 { gap: 1rem; }
+.text-dim {
+  color: var(--text-dim);
+}
+
+.text-highlight {
+  color: var(--text-highlight);
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.flex-row {
+  display: flex;
+  align-items: center;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.gap-1 {
+  gap: 0.5rem;
+}
+
+.gap-2 {
+  gap: 1rem;
+}
