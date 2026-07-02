@@ -36,6 +36,7 @@ export const HelpContent = () => (
             <div><span className="text-highlight">projects</span> - View my recent work</div>
             <div><span className="text-highlight">skills</span>   - List my technical skills</div>
             <div><span className="text-highlight">contact</span>  - Get my contact information</div>
+            <div><span className="text-highlight">resume</span>   - View my resume</div>
             <div><span className="text-highlight">theme</span>    - Available themes: matrix, amber, red, cyan</div>
             <div><span className="text-highlight">clear</span>    - Clear the terminal screen</div>
         </div>
@@ -78,10 +79,11 @@ export const SkillsContent = () => (
     <div className="mt-1 mb-2">
         <div className="text-highlight mb-1">❯ ANALYZING SKILL MATRIX...</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div><strong className="text-highlight">Frontend:</strong> React, TypeScript, HTML/CSS, Tailwind, Framer Motion</div>
-            <div><strong className="text-highlight">Backend:</strong> Node.js, Express, Java, Spring Boot</div>
+            <div><strong className="text-highlight">Frontend:</strong> React, TypeScript, HTML/CSS</div>
+            <div><strong className="text-highlight">Backend:</strong> Java, Spring Boot</div>
             <div><strong className="text-highlight">Database:</strong> MongoDB, PostgreSQL, MySQL</div>
-            <div><strong className="text-highlight">Tools:</strong> Git, Docker, AWS, Postman</div>
+            <div><strong className="text-highlight">Tools:</strong> Git, Docker, Postman</div>
+            <div><strong className="text-highlight">Cloud:</strong> AWS, Azure</div>
         </div>
     </div>
 );
